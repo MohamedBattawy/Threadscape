@@ -1,0 +1,5 @@
+{
+  "watch": ["index.ts", "src", "utils", "schemaValidations"],
+  "ext": "ts",
+  "exec": "ts-node index.ts"
+} 
