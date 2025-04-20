@@ -5,6 +5,9 @@ import express, { Request, Response } from 'express';
 import { PrismaClient } from './src/generated/prisma';
 
 import authRoutes from './routes/authRoutes';
+import cartRoutes from './routes/cartRoutes';
+import orderRoutes from './routes/orderRoutes';
+import productImageRoutes from './routes/productImageRoutes';
 import productRoutes from './routes/productRoutes';
 import userRoutes from './routes/userRoutes';
 
@@ -48,6 +51,9 @@ app.get('/api/test', async (req: Request, res: Response) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/product-images', productImageRoutes);
+app.use('/api/cart', cartRoutes);
+app.use('/api/orders', orderRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);

@@ -45,19 +45,49 @@ export const getProductsByCategory = (category: string): Product[] => {
   }
 };
 
+// Sort products based on sorting criteria
+export const sortProducts = (products: Product[], sortBy: string = 'default'): Product[] => {
+  const productsCopy = [...products];
+  
+  switch (sortBy) {
+    case 'price-asc':
+      return productsCopy.sort((a, b) => a.price - b.price);
+    case 'price-desc':
+      return productsCopy.sort((a, b) => b.price - a.price);
+    case 'name-asc':
+      return productsCopy.sort((a, b) => a.name.localeCompare(b.name));
+    case 'name-desc':
+      return productsCopy.sort((a, b) => b.name.localeCompare(a.name));
+    case 'newest':
+      // In a real app, you would sort by date
+      // Here we're just using the id as a proxy for newest
+      return productsCopy.sort((a, b) => {
+        const idA = parseInt(a.id.split('-')[1]);
+        const idB = parseInt(b.id.split('-')[1]);
+        return idB - idA;
+      });
+    default:
+      return productsCopy;
+  }
+};
+
 // Get paginated products
 export const getPaginatedProducts = (
   products: Product[],
   page: number = 1,
-  pageSize: number = 12
+  pageSize: number = 12,
+  sortBy: string = 'default'
 ): { 
   products: Product[],
   total: number,
   totalPages: number,
   currentPage: number
 } => {
+  // Sort products first
+  const sortedProducts = sortProducts(products, sortBy);
+  
   const startIndex = (page - 1) * pageSize;
-  const paginatedProducts = products.slice(startIndex, startIndex + pageSize);
+  const paginatedProducts = sortedProducts.slice(startIndex, startIndex + pageSize);
   
   return {
     products: paginatedProducts,

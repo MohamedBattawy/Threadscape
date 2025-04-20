@@ -2866,6 +2866,7 @@ export namespace Prisma {
     price: Decimal | null
     category: $Enums.Category | null
     inventory: number | null
+    isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2877,6 +2878,7 @@ export namespace Prisma {
     price: Decimal | null
     category: $Enums.Category | null
     inventory: number | null
+    isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2888,6 +2890,7 @@ export namespace Prisma {
     price: number
     category: number
     inventory: number
+    isActive: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -2913,6 +2916,7 @@ export namespace Prisma {
     price?: true
     category?: true
     inventory?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2924,6 +2928,7 @@ export namespace Prisma {
     price?: true
     category?: true
     inventory?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2935,6 +2940,7 @@ export namespace Prisma {
     price?: true
     category?: true
     inventory?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -3033,6 +3039,7 @@ export namespace Prisma {
     price: Decimal
     category: $Enums.Category
     inventory: number
+    isActive: boolean
     createdAt: Date
     updatedAt: Date
     _count: ProductCountAggregateOutputType | null
@@ -3063,6 +3070,7 @@ export namespace Prisma {
     price?: boolean
     category?: boolean
     inventory?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     images?: boolean | Product$imagesArgs<ExtArgs>
@@ -3079,6 +3087,7 @@ export namespace Prisma {
     price?: boolean
     category?: boolean
     inventory?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["product"]>
@@ -3090,6 +3099,7 @@ export namespace Prisma {
     price?: boolean
     category?: boolean
     inventory?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["product"]>
@@ -3101,11 +3111,12 @@ export namespace Prisma {
     price?: boolean
     category?: boolean
     inventory?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "price" | "category" | "inventory" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
+  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "price" | "category" | "inventory" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     images?: boolean | Product$imagesArgs<ExtArgs>
     orderItems?: boolean | Product$orderItemsArgs<ExtArgs>
@@ -3131,6 +3142,7 @@ export namespace Prisma {
       price: Prisma.Decimal
       category: $Enums.Category
       inventory: number
+      isActive: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["product"]>
@@ -3566,6 +3578,7 @@ export namespace Prisma {
     readonly price: FieldRef<"Product", 'Decimal'>
     readonly category: FieldRef<"Product", 'Category'>
     readonly inventory: FieldRef<"Product", 'Int'>
+    readonly isActive: FieldRef<"Product", 'Boolean'>
     readonly createdAt: FieldRef<"Product", 'DateTime'>
     readonly updatedAt: FieldRef<"Product", 'DateTime'>
   }
@@ -9687,6 +9700,7 @@ export namespace Prisma {
     price: 'price',
     category: 'category',
     inventory: 'inventory',
+    isActive: 'isActive',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -10004,6 +10018,7 @@ export namespace Prisma {
     price?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
     category?: EnumCategoryFilter<"Product"> | $Enums.Category
     inventory?: IntFilter<"Product"> | number
+    isActive?: BoolFilter<"Product"> | boolean
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
     images?: ProductImageListRelationFilter
@@ -10019,6 +10034,7 @@ export namespace Prisma {
     price?: SortOrder
     category?: SortOrder
     inventory?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     images?: ProductImageOrderByRelationAggregateInput
@@ -10037,6 +10053,7 @@ export namespace Prisma {
     price?: DecimalFilter<"Product"> | Decimal | DecimalJsLike | number | string
     category?: EnumCategoryFilter<"Product"> | $Enums.Category
     inventory?: IntFilter<"Product"> | number
+    isActive?: BoolFilter<"Product"> | boolean
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
     images?: ProductImageListRelationFilter
@@ -10052,6 +10069,7 @@ export namespace Prisma {
     price?: SortOrder
     category?: SortOrder
     inventory?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ProductCountOrderByAggregateInput
@@ -10071,6 +10089,7 @@ export namespace Prisma {
     price?: DecimalWithAggregatesFilter<"Product"> | Decimal | DecimalJsLike | number | string
     category?: EnumCategoryWithAggregatesFilter<"Product"> | $Enums.Category
     inventory?: IntWithAggregatesFilter<"Product"> | number
+    isActive?: BoolWithAggregatesFilter<"Product"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
   }
@@ -10492,6 +10511,7 @@ export namespace Prisma {
     price: Decimal | DecimalJsLike | number | string
     category: $Enums.Category
     inventory?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     images?: ProductImageCreateNestedManyWithoutProductInput
@@ -10507,6 +10527,7 @@ export namespace Prisma {
     price: Decimal | DecimalJsLike | number | string
     category: $Enums.Category
     inventory?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
@@ -10521,6 +10542,7 @@ export namespace Prisma {
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     inventory?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     images?: ProductImageUpdateManyWithoutProductNestedInput
@@ -10536,6 +10558,7 @@ export namespace Prisma {
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     inventory?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
@@ -10551,6 +10574,7 @@ export namespace Prisma {
     price: Decimal | DecimalJsLike | number | string
     category: $Enums.Category
     inventory?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -10561,6 +10585,7 @@ export namespace Prisma {
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     inventory?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10572,6 +10597,7 @@ export namespace Prisma {
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     inventory?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -11082,6 +11108,11 @@ export namespace Prisma {
     not?: NestedEnumCategoryFilter<$PrismaModel> | $Enums.Category
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type ProductImageListRelationFilter = {
     every?: ProductImageWhereInput
     some?: ProductImageWhereInput
@@ -11109,6 +11140,7 @@ export namespace Prisma {
     price?: SortOrder
     category?: SortOrder
     inventory?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -11126,6 +11158,7 @@ export namespace Prisma {
     price?: SortOrder
     category?: SortOrder
     inventory?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -11137,6 +11170,7 @@ export namespace Prisma {
     price?: SortOrder
     category?: SortOrder
     inventory?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -11173,9 +11207,12 @@ export namespace Prisma {
     _max?: NestedEnumCategoryFilter<$PrismaModel>
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type ProductScalarRelationFilter = {
@@ -11212,14 +11249,6 @@ export namespace Prisma {
   export type ProductImageSumOrderByAggregateInput = {
     id?: SortOrder
     productId?: SortOrder
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type UserScalarRelationFilter = {
@@ -11635,6 +11664,10 @@ export namespace Prisma {
     set?: $Enums.Category
   }
 
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
   export type ProductImageUpdateManyWithoutProductNestedInput = {
     create?: XOR<ProductImageCreateWithoutProductInput, ProductImageUncheckedCreateWithoutProductInput> | ProductImageCreateWithoutProductInput[] | ProductImageUncheckedCreateWithoutProductInput[]
     connectOrCreate?: ProductImageCreateOrConnectWithoutProductInput | ProductImageCreateOrConnectWithoutProductInput[]
@@ -11751,10 +11784,6 @@ export namespace Prisma {
     create?: XOR<ProductCreateWithoutImagesInput, ProductUncheckedCreateWithoutImagesInput>
     connectOrCreate?: ProductCreateOrConnectWithoutImagesInput
     connect?: ProductWhereUniqueInput
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
   }
 
   export type ProductUpdateOneRequiredWithoutImagesNestedInput = {
@@ -12080,6 +12109,11 @@ export namespace Prisma {
     not?: NestedEnumCategoryFilter<$PrismaModel> | $Enums.Category
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
@@ -12104,11 +12138,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumCategoryFilter<$PrismaModel>
     _max?: NestedEnumCategoryFilter<$PrismaModel>
-  }
-
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -12477,6 +12506,7 @@ export namespace Prisma {
     price: Decimal | DecimalJsLike | number | string
     category: $Enums.Category
     inventory?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     orderItems?: OrderItemCreateNestedManyWithoutProductInput
@@ -12491,6 +12521,7 @@ export namespace Prisma {
     price: Decimal | DecimalJsLike | number | string
     category: $Enums.Category
     inventory?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductInput
@@ -12520,6 +12551,7 @@ export namespace Prisma {
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     inventory?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderItems?: OrderItemUpdateManyWithoutProductNestedInput
@@ -12534,6 +12566,7 @@ export namespace Prisma {
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     inventory?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderItems?: OrderItemUncheckedUpdateManyWithoutProductNestedInput
@@ -12583,6 +12616,7 @@ export namespace Prisma {
     price: Decimal | DecimalJsLike | number | string
     category: $Enums.Category
     inventory?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     images?: ProductImageCreateNestedManyWithoutProductInput
@@ -12597,6 +12631,7 @@ export namespace Prisma {
     price: Decimal | DecimalJsLike | number | string
     category: $Enums.Category
     inventory?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
@@ -12668,6 +12703,7 @@ export namespace Prisma {
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     inventory?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     images?: ProductImageUpdateManyWithoutProductNestedInput
@@ -12682,6 +12718,7 @@ export namespace Prisma {
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     inventory?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
@@ -12834,6 +12871,7 @@ export namespace Prisma {
     price: Decimal | DecimalJsLike | number | string
     category: $Enums.Category
     inventory?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     images?: ProductImageCreateNestedManyWithoutProductInput
@@ -12848,6 +12886,7 @@ export namespace Prisma {
     price: Decimal | DecimalJsLike | number | string
     category: $Enums.Category
     inventory?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
@@ -12905,6 +12944,7 @@ export namespace Prisma {
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     inventory?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     images?: ProductImageUpdateManyWithoutProductNestedInput
@@ -12919,6 +12959,7 @@ export namespace Prisma {
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     inventory?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
@@ -12968,6 +13009,7 @@ export namespace Prisma {
     price: Decimal | DecimalJsLike | number | string
     category: $Enums.Category
     inventory?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     images?: ProductImageCreateNestedManyWithoutProductInput
@@ -12982,6 +13024,7 @@ export namespace Prisma {
     price: Decimal | DecimalJsLike | number | string
     category: $Enums.Category
     inventory?: number
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     images?: ProductImageUncheckedCreateNestedManyWithoutProductInput
@@ -13053,6 +13096,7 @@ export namespace Prisma {
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     inventory?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     images?: ProductImageUpdateManyWithoutProductNestedInput
@@ -13067,6 +13111,7 @@ export namespace Prisma {
     price?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     inventory?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     images?: ProductImageUncheckedUpdateManyWithoutProductNestedInput
