@@ -6,6 +6,60 @@ import { handleServerError, sendErrorResponse, sendSuccessResponse } from '../ut
 const prisma = new PrismaClient();
 
 /**
+ * @desc    Get 4 random featured products
+ * @route   GET /api/products/featured
+ * @access  Public
+ */
+export const getFeaturedProducts = async (req: Request, res: Response) => {
+  try {
+    // Get active products with inventory > 0
+    const products = await prisma.product.findMany({
+      where: {
+        isActive: true,
+        inventory: {
+          gt: 0
+        }
+      },
+      include: {
+        images: true,
+        ratings: {
+          select: {
+            value: true,
+          },
+        },
+      }
+    });
+
+    // Shuffle the products array to randomize
+    const shuffled = [...products].sort(() => 0.5 - Math.random());
+    
+    // Take the first 4 products
+    const featuredProducts = shuffled.slice(0, 4);
+
+    // Calculate average rating for each product
+    const productsWithAvgRating = featuredProducts.map(product => {
+      const ratings = product.ratings;
+      const avgRating = ratings.length > 0
+        ? ratings.reduce((sum, item) => sum + item.value, 0) / ratings.length
+        : 0;
+      
+      return {
+        ...product,
+        ratings: undefined,
+        avgRating: parseFloat(avgRating.toFixed(1)),
+        numReviews: ratings.length,
+      };
+    });
+
+    sendSuccessResponse(res, {
+      products: productsWithAvgRating
+    });
+  } catch (error) {
+    handleServerError(res, error);
+  }
+};
+
+/**
  * @desc    Get all products
  * @route   GET /api/products
  * @access  Public

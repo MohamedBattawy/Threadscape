@@ -1,48 +1,81 @@
 "use client";
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { getUserOrders } from '../../utils/api';
 
-// Sample order data for demonstration
-const sampleOrders = [
-  {
-    id: '1001',
-    date: '2023-12-15',
-    total: 89.97,
-    status: 'Delivered',
-    items: [
-      { id: 'p1', name: 'Men&apos;s Classic T-Shirt', quantity: 2, price: 29.99 },
-      { id: 'p2', name: 'Women&apos;s Slim Jeans', quantity: 1, price: 49.99 }
-    ]
-  },
-  {
-    id: '1002',
-    date: '2024-01-20',
-    total: 125.98,
-    status: 'Processing',
-    items: [
-      { id: 'p3', name: 'Leather Wallet', quantity: 1, price: 35.99 },
-      { id: 'p4', name: 'Women&apos;s Summer Dress', quantity: 1, price: 89.99 }
-    ]
-  }
-];
+// Order type definition for TypeScript
+type OrderItem = {
+  id: number;
+  productId: number;
+  quantity: number;
+  price: number;
+  product: {
+    id: number;
+    name: string;
+    images?: { url: string }[];
+  };
+};
+
+type Order = {
+  id: number;
+  userId: number;
+  total: number;
+  status: string;
+  createdAt: string;
+  orderItems: OrderItem[];
+};
 
 export default function OrdersPage() {
-  const { user, loading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const router = useRouter();
-  const [orders] = useState(sampleOrders);
-  const [activeOrderId, setActiveOrderId] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [activeOrderId, setActiveOrderId] = useState<number | null>(null);
+  
+  // Check for success parameter in URL
+  const success = searchParams.get('success');
+  const orderId = searchParams.get('orderId');
+
+  // Fetch orders data
+  useEffect(() => {
+    const fetchOrders = async () => {
+      if (!user) return;
+      
+      try {
+        setLoading(true);
+        const response = await getUserOrders();
+        setOrders(response.data);
+        
+        // If this is a redirect from a successful order creation, highlight that order
+        if (success === 'true' && orderId) {
+          setActiveOrderId(Number(orderId));
+        }
+      } catch (err) {
+        console.error('Error fetching orders:', err);
+        setError(err instanceof Error ? err.message : 'Failed to load your orders');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    if (user) {
+      fetchOrders();
+    }
+  }, [user, success, orderId]);
 
   // Redirect to login if not authenticated
   useEffect(() => {
-    if (!loading && !user) {
+    if (!authLoading && !user) {
       router.push('/auth/signin?returnTo=/account/orders');
     }
-  }, [user, loading, router]);
+  }, [user, authLoading, router]);
 
-  const toggleOrderDetails = (orderId: string) => {
+  const toggleOrderDetails = (orderId: number) => {
     if (activeOrderId === orderId) {
       setActiveOrderId(null);
     } else {
@@ -50,7 +83,38 @@ export default function OrdersPage() {
     }
   };
 
-  if (loading) {
+  // Helper function to format dates
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  // Helper function to format status for display
+  const getStatusDisplay = (status: string) => {
+    // Convert PENDING to Pending, DELIVERED to Delivered, etc.
+    return status.charAt(0) + status.slice(1).toLowerCase();
+  };
+
+  // Helper function to determine text color based on status
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'DELIVERED':
+        return 'text-green-600 dark:text-green-400';
+      case 'SHIPPED':
+        return 'text-blue-600 dark:text-blue-400';
+      case 'PROCESSING':
+        return 'text-yellow-600 dark:text-yellow-400';
+      case 'CANCELLED':
+        return 'text-red-600 dark:text-red-400';
+      default:
+        return 'text-gray-600 dark:text-gray-400';
+    }
+  };
+
+  if (authLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-indigo-500"></div>
@@ -74,6 +138,20 @@ export default function OrdersPage() {
               View your past orders and their statuses
             </p>
           </div>
+          
+          {error && (
+            <div className="p-4 bg-red-50 dark:bg-red-900 border-b border-red-200 dark:border-red-800">
+              <p className="text-sm text-red-600 dark:text-red-300">{error}</p>
+            </div>
+          )}
+          
+          {success === 'true' && (
+            <div className="p-4 bg-green-50 dark:bg-green-900 border-b border-green-200 dark:border-green-800">
+              <p className="text-sm text-green-600 dark:text-green-300">
+                Your order has been placed successfully!
+              </p>
+            </div>
+          )}
           
           <div className="p-4">
             {orders.length === 0 ? (
@@ -118,19 +196,15 @@ export default function OrdersPage() {
                           Order #{order.id}
                         </div>
                         <div className="text-sm text-gray-500 dark:text-gray-400">
-                          Placed on {new Date(order.date).toLocaleDateString()}
+                          Placed on {formatDate(order.createdAt)}
                         </div>
                       </div>
                       <div className="space-y-1 text-right">
                         <div className="text-sm font-medium text-gray-900 dark:text-white">
-                          ${order.total.toFixed(2)}
+                          ${Number(order.total).toFixed(2)}
                         </div>
-                        <div className={`text-sm ${
-                          order.status === 'Delivered' 
-                            ? 'text-green-600 dark:text-green-400' 
-                            : 'text-yellow-600 dark:text-yellow-400'
-                        }`}>
-                          {order.status}
+                        <div className={`text-sm ${getStatusColor(order.status)}`}>
+                          {getStatusDisplay(order.status)}
                         </div>
                       </div>
                       <div className="w-full sm:w-auto mt-2 sm:mt-0">
@@ -161,14 +235,14 @@ export default function OrdersPage() {
                         <div className="mt-2">
                           <h4 className="text-sm font-medium text-gray-900 dark:text-white">Order Items</h4>
                           <div className="mt-2 divide-y divide-gray-200 dark:divide-gray-700">
-                            {order.items.map((item) => (
+                            {order.orderItems.map((item) => (
                               <div key={item.id} className="py-3 flex justify-between">
                                 <div>
-                                  <p className="text-sm font-medium text-gray-900 dark:text-white">{item.name}</p>
+                                  <p className="text-sm font-medium text-gray-900 dark:text-white">{item.product.name}</p>
                                   <p className="text-sm text-gray-500 dark:text-gray-400">Qty: {item.quantity}</p>
                                 </div>
                                 <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                  ${(item.price * item.quantity).toFixed(2)}
+                                  ${(Number(item.price) * item.quantity).toFixed(2)}
                                 </p>
                               </div>
                             ))}
@@ -178,7 +252,7 @@ export default function OrdersPage() {
                         <div className="mt-4 pt-4 border-t dark:border-gray-700">
                           <div className="flex justify-between text-sm">
                             <p className="font-medium text-gray-900 dark:text-white">Total</p>
-                            <p className="font-medium text-gray-900 dark:text-white">${order.total.toFixed(2)}</p>
+                            <p className="font-medium text-gray-900 dark:text-white">${Number(order.total).toFixed(2)}</p>
                           </div>
                         </div>
                         
@@ -189,14 +263,6 @@ export default function OrdersPage() {
                           >
                             View Order Details
                           </Link>
-                          {order.status === 'Delivered' && (
-                            <button
-                              type="button"
-                              className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                            >
-                              Buy Again
-                            </button>
-                          )}
                         </div>
                       </div>
                     )}

@@ -34,10 +34,19 @@ export const protect = async (req: Request, res: Response, next: NextFunction) =
 
   try {
     // Verify token
-    const decoded = jwt.verify(
-      token, 
-      process.env.JWT_SECRET || 'your-secret-key'
-    ) as TokenPayload;
+    let decoded;
+    try {
+      const jwtSecret = process.env.JWT_SECRET;
+      if (!jwtSecret) {
+        throw new Error('JWT_SECRET is not defined');
+      }
+      decoded = jwt.verify(
+        token,
+        jwtSecret
+      ) as TokenPayload;
+    } catch (error) {
+      return res.status(401).json({ message: 'Invalid token' });
+    }
 
     // Add user to request (without password)
     const user = await prisma.user.findUnique({

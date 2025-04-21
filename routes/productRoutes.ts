@@ -2,6 +2,7 @@ import express from 'express';
 import {
     createProduct,
     discontinueProduct,
+    getFeaturedProducts,
     getProductById,
     getProducts,
     getProductsByCategory,
@@ -14,6 +15,7 @@ const router = express.Router();
 
 // Public routes
 router.get('/', getProducts);
+router.get('/featured', getFeaturedProducts);
 router.get('/category/:category', getProductsByCategory);
 router.get('/:id', getProductById);
 

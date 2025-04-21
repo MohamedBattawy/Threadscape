@@ -22,9 +22,13 @@ const COOKIE_OPTIONS = {
  * Generate JWT token
  */
 const generateToken = (userId: number, email: string, role: string) => {
+  const jwtSecret = process.env.JWT_SECRET;
+  if (!jwtSecret) {
+    throw new Error('JWT_SECRET is not defined');
+  }
   return jwt.sign(
     { id: userId, email, role },
-    process.env.JWT_SECRET || 'your-secret-key',
+    jwtSecret,
     { expiresIn: JWT_EXPIRATION }
   );
 };
