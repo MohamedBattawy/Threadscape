@@ -45,6 +45,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 const PORT = process.env.PORT || 5000;
+console.log(`Using PORT: ${PORT}, environment PORT value: ${process.env.PORT || 'not set'}`);
 
 app.get('/api/test', async (req: Request, res: Response) => {
   try {
