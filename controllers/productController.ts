@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 import { parseIdParam } from '../utils/queryHelpers';
 import { handleServerError, sendErrorResponse, sendSuccessResponse } from '../utils/responseHandlers';
@@ -86,7 +86,7 @@ export const getProducts = async (req: Request, res: Response) => {
     }
     
     // Build where clause for filtering
-    const whereClause: Prisma.ProductWhereInput = {
+    const whereClause: Record<string, any> = {
       ...(category ? { category: category as any } : {}),
       // Only include active products unless includeInactive is true
       ...(includeInactive ? {} : { isActive: true })
@@ -399,7 +399,7 @@ export const getProductsByCategory = async (req: Request, res: Response) => {
     }
     
     // Build where clause for filtering - only active products and specific category
-    const whereClause: Prisma.ProductWhereInput = {
+    const whereClause: Record<string, any> = {
       category: category.toUpperCase() as any,
       isActive: true
     };
