@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import ImageWithFallback from "./ImageWithFallback";
 
 export type Product = {
@@ -8,6 +9,7 @@ export type Product = {
   name: string;
   price: number | string;
   imageSrc: string;
+  images?: string[];
   category: string;
   description: string;
   inventory?: number;
@@ -21,6 +23,19 @@ type ProductCardProps = {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const isOutOfStock = product.inventory !== undefined && product.inventory <= 0;
+  const [currentImage, setCurrentImage] = useState(product.imageSrc);
+  
+  // Change to secondary image on hover if available
+  const handleMouseEnter = () => {
+    if (product.images && product.images.length > 1) {
+      setCurrentImage(product.images[1]);
+    }
+  };
+  
+  // Change back to main image when not hovering
+  const handleMouseLeave = () => {
+    setCurrentImage(product.imageSrc);
+  };
   
   // Ensure price is a number before using toFixed
   const formatPrice = (price: number | string): string => {
@@ -37,13 +52,17 @@ export default function ProductCard({ product }: ProductCardProps) {
   
   return (
     <div className="group">
-      <div className="mb-4 aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden relative">
+      <div 
+        className="mb-4 aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden relative"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         <div className="h-80 relative">
           <ImageWithFallback 
-            src={product.imageSrc} 
+            src={currentImage} 
             alt={product.name} 
             fill
-            className={`object-cover object-center transition-opacity group-hover:opacity-75 ${isOutOfStock ? 'opacity-70' : ''}`}
+            className={`object-cover object-center transition-all duration-300 ${isOutOfStock ? 'opacity-70' : ''}`}
           />
           
           {isOutOfStock && (

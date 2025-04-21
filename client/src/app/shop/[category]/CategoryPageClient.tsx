@@ -206,6 +206,7 @@ export default function CategoryPageClient({
                 name: product.name,
                 price: product.price,
                 imageSrc: product.images?.[0]?.url || "/stats.png",
+                images: product.images?.map(img => img.url) || [],
                 category: product.category.toLowerCase(),
                 description: product.description,
                 inventory: product.inventory,

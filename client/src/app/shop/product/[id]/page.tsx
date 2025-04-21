@@ -45,6 +45,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   const [quantity, setQuantity] = useState(1);
   const [addingToCart, setAddingToCart] = useState(false);
   const [addToCartSuccess, setAddToCartSuccess] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const { refreshCart } = useCart();
   const router = useRouter();
 
@@ -133,14 +134,40 @@ export default function ProductPage({ params }: { params: { id: string } }) {
       </nav>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* Product Image */}
-        <div className="relative h-[500px] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
-          <ImageWithFallback 
-            src={product.images?.[0]?.url || "/stats.png"} 
-            alt={product.name} 
-            fill 
-            className="object-contain"
-          />
+        {/* Product Images */}
+        <div className="space-y-4">
+          {/* Main Image */}
+          <div className="relative h-[500px] bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+            <ImageWithFallback 
+              src={product.images?.[selectedImageIndex]?.url || "/stats.png"} 
+              alt={product.name} 
+              fill 
+              className="object-contain"
+            />
+          </div>
+          
+          {/* Image Thumbnails */}
+          {product.images && product.images.length > 1 && (
+            <div className="flex flex-wrap gap-2">
+              {product.images.map((image, index) => (
+                <button
+                  key={image.id}
+                  onClick={() => setSelectedImageIndex(index)}
+                  className={`relative w-20 h-20 border-2 rounded overflow-hidden 
+                    ${index === selectedImageIndex 
+                      ? 'border-black dark:border-white' 
+                      : 'border-transparent hover:border-gray-300 dark:hover:border-gray-600'}`}
+                >
+                  <ImageWithFallback
+                    src={image.url}
+                    alt={`${product.name} - view ${index + 1}`}
+                    fill
+                    className="object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
         
         {/* Product Details */}
