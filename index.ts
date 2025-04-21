@@ -2,6 +2,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
+import helmet from 'helmet';
 import { PrismaClient } from './src/generated/prisma';
 
 import authRoutes from './routes/authRoutes';
@@ -16,10 +17,30 @@ dotenv.config();
 const app = express();
 const prisma = new PrismaClient();
 
+// Set security headers with helmet
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+        connectSrc: ["'self'", process.env.FRONTEND_URL || ""],
+        imgSrc: ["'self'", "data:", "https:"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        fontSrc: ["'self'", "data:"],
+        formAction: ["'self'"],
+        frameAncestors: ["'none'"],
+      },
+    },
+  })
+);
+
+// CORS configuration
 app.use(cors({
   origin: process.env.FRONTEND_URL,
   credentials: true,
 }));
+
 app.use(express.json());
 app.use(cookieParser());
 

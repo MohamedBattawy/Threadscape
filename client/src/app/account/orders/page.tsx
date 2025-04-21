@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { getUserOrders } from '../../utils/api';
 
@@ -28,7 +28,7 @@ type Order = {
   orderItems: OrderItem[];
 };
 
-export default function OrdersPage() {
+function OrdersContent() {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -274,5 +274,22 @@ export default function OrdersPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Loading fallback component
+function OrdersLoading() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+    </div>
+  );
+}
+
+export default function OrdersPage() {
+  return (
+    <Suspense fallback={<OrdersLoading />}>
+      <OrdersContent />
+    </Suspense>
   );
 } 
