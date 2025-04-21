@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from '../src/generated/prisma';
+import { PrismaClient } from '@prisma/client';
 import { deleteImage, getPublicIdFromUrl } from '../utils/cloudinaryConfig';
 import { parseIdParam } from '../utils/queryHelpers';
 import { handleServerError, sendErrorResponse, sendSuccessResponse } from '../utils/responseHandlers';

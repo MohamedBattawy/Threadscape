@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { LoginUserInput } from '../schemaValidations/userSchema';
-import { PrismaClient } from '../src/generated/prisma';
+import { PrismaClient } from '@prisma/client';
 import { defaultUserSelect } from '../utils/queryHelpers';
 import { handleServerError, sendErrorResponse, sendSuccessResponse } from '../utils/responseHandlers';
 

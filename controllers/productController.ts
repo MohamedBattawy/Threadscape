@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Prisma, PrismaClient } from '../src/generated/prisma';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { parseIdParam } from '../utils/queryHelpers';
 import { handleServerError, sendErrorResponse, sendSuccessResponse } from '../utils/responseHandlers';
 

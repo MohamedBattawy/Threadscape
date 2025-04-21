@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
 import { CreateUserInput, UpdateUserInput } from '../schemaValidations/userSchema';
-import { PrismaClient } from '../src/generated/prisma';
+import { PrismaClient } from '@prisma/client';
 import { defaultUserSelect, parseIdParam, userWithOrdersSelect } from '../utils/queryHelpers';
 import { handleServerError, sendErrorResponse, sendSuccessResponse } from '../utils/responseHandlers';
 

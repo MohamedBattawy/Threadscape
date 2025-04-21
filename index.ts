@@ -3,7 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import helmet from 'helmet';
-import { PrismaClient } from './src/generated/prisma';
+import { PrismaClient } from '@prisma/client';
 
 import authRoutes from './routes/authRoutes';
 import cartRoutes from './routes/cartRoutes';

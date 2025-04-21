@@ -237,11 +237,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://threadscape_owner:npg_xZYlyRF4Sq7T@ep-wild-sun-a4lri33o-pooler.us-east-1.aws.neon.tech/threadscape?sslmode=require"
+        "value": null
       }
     }
   },
