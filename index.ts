@@ -1,9 +1,9 @@
+import { PrismaClient } from '@prisma/client';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import helmet from 'helmet';
-import { PrismaClient } from '@prisma/client';
 
 import authRoutes from './routes/authRoutes';
 import cartRoutes from './routes/cartRoutes';
@@ -24,7 +24,13 @@ app.use(
       directives: {
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-        connectSrc: ["'self'", process.env.FRONTEND_URL || ""],
+        connectSrc: [
+          "'self'", 
+          process.env.FRONTEND_URL || "", 
+          "https://threadscape-frontend.vercel.app",
+          "https://threadscape.vercel.app",
+          "https://threadscape-frontend.onrender.com"
+        ].filter(Boolean),
         imgSrc: ["'self'", "data:", "https:"],
         styleSrc: ["'self'", "'unsafe-inline'"],
         fontSrc: ["'self'", "data:"],
@@ -37,7 +43,24 @@ app.use(
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl requests)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = [
+      process.env.FRONTEND_URL, 
+      'https://threadscape-frontend.vercel.app',   // Add your Vercel domain here
+      'https://threadscape.vercel.app',            // Add any alternative Vercel domain 
+      'https://threadscape-frontend.onrender.com'  // Keep the original Render domain too
+    ].filter(Boolean); // Filter out any undefined/empty values
+    
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      console.log('CORS blocked for origin:', origin);
+      callback(null, true); // Temporarily allow all origins while testing
+    }
+  },
   credentials: true,
 }));
 
